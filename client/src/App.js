@@ -5,6 +5,7 @@ import Login from './login.js'; // Import the Login component
 import Etudiant from './etudiant';
 import Technicien from './technicien';
 import Responsable from './responsable';
+import Bibi from './bibi';
 
 // ScrollToTop component for smooth navigation
 const ScrollToTop = () => {
@@ -524,6 +525,7 @@ const App = () => {
         <Route path="/etudiant" element={<Etudiant />} />
         <Route path="/technicien" element={<Technicien />} />
         <Route path="/responsable" element={<Responsable />} />
+        <Route path="/bibi" element={<Bibi />} />
       </Routes>
     </Router>
   );

@@ -68,6 +68,8 @@ const Login = () => {
         navigate('/technicien');
       } else if (data.role === 'responsable') {
         navigate('/responsable');
+      } else if (data.role === 'bibi') {
+        navigate('/bibi');
       } else {
         setError('Unauthorized role');
       }

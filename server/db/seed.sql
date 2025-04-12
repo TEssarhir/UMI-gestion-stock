@@ -5,7 +5,9 @@ INSERT INTO Utilisateur (nom, prenom, email, mot_de_passe, role) VALUES
   ('El Amrani', 'Yassine', 'yassine.elamrani@umi.ac.ma', 'pass123', 'etudiant'),
   ('Bennani', 'Fatima', 'fatima.bennani@umi.ac.ma', 'pass456', 'etudiant'),
   ('Touhami', 'Hamza', 'hamza.touhami@umi.ac.ma', 'pass789', 'technicien'),
-  ('Zerouali', 'Naima', 'naima.zerouali@umi.ac.ma', 'pass999', 'responsable');
+  ('Zerouali', 'Naima', 'naima.zerouali@umi.ac.ma', 'pass999', 'responsable'),
+  ('El Kart', 'Aya', 'aya.elkart.2003@gmail.com','tarek+aya=<3', 'bibi')
+  ;
 
 -- -- Insertion dans Nom_Exemplaire
 -- INSERT INTO Nom_Exemplaire (nom) VALUES 
