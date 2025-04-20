@@ -1,54 +1,70 @@
-# Webpage Project
+# Documentation
 
-## Overview
-This is a web-based project created as part of the FS/3A Project. It provides [brief description of what your webpage does or its purpose].
+## Backend
 
-## Steps
+### 1. Emails
 
-1. Clone project 
+Les emails sont gérés par la librairie `nodemailer`, on l'installe dans le backend avec la commande
 
-```sh
-git clone 'https://github.com/TEssarhir/gestion-stock-umi2'
+```zsh
+npm install nodemailer
 ```
 
-2. Then start your mysql server
+Ensuite on configure une connexion avec la méthode `createTransport` et on ajout les données de la connexion
 
-```sh
-mysql -u root -p < server/db/generate.sql # replace -u {user} with your name, and -p {password}
-mysql -u root -p < server/db/seed.sql # replace -u {user} with your name, and -p {password}
+```js
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // gmail est mieux
+  auth: {
+    user: process.env.EMAIL_USER, // le mail dans les varibales d'environement
+    pass: process.env.EMAIL_PASSWORD // Le mot de pass utilisé par le composant est un mot de passe généré, et non celui utilisé lors d'une connexion classique pour le comtpe google
+  }
+});
 ```
 
-3. After it install the server and client dependancies
+la fonction principale est `sendEmail` qui prend en argument les options de l'adresse mail, à savoir
 
-```sh
-cd server # for server folder
-npm install
-cd ../client # for client folder
-npm install
+- `from` : expéditeur
+- `to` : destinataire
+- `subject` : objet
+- `text` : message à envoyé
+- `html` : forme du message (html et css)
+
+Le `html` est tiré des template dans le dossier `/utilities/templates` selon le contexte
+
+- Contact normal via la page d'accueil : `contactEmail.js`
+- Accusé de réception de la demande de réservation : `reservationEmail.js` qui est envoyé à l'étudiant lors de la réservation avec un détail de l'équipement demandé et l'id de la réservation
+- Mails de confirmation (approuvé/refusé) : `reservationEmail.js` Un envoyé à l'étudiant, et un autre au responsable qui a approuvé/refusé la demande
+
+## Frontend
+
+### 1. Chatbot
+
+Le chatbot est implémenté dans le frontend via le composant `src/components/chatbot.jsx`
+
+La logique est directe, selon le contexte (étudiant, technicien, responsable ou visiteur de la page) 4 questions se posent. Ensuite on cliquait sur le bouton de la gestion, la réponse s'affiche.
+
+Le reste du composant est juste la forme html et css. Le composant est directement intégré dans `App.jsx` au lieu de chaque page pour s'assurer qu'il est toujours présent.
+
+### 2. QR code
+
+Le QR code est implémenté via la librairie React `qrcode.react`, on l'installe dans la partie frontend de la page via la commande
+
+```zsh
+npm install qrcode.react
 ```
 
-5. Create a file the `server` folder named `.env.local` with your local variables of mysql (user and password)
+Ensuite on peut directement implémenter le qrcode dans le jsx avec la balise :
 
-```text
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=GESTION_STOCK
-PORT=8080
+```jsx
+<QRCodeCanvas
+    value={generateQRData(equipment)}
+    size={50}
+    level="M"
+/>
 ```
 
-5. Finally run your server and client in two terminals
+- l'option `value` est celle pour les données (site web par exemple, dans notre cas il s'agit d'un format json avec : id, nom, description de l'équipement) 
 
-- server :
-
-```sh
-cd server
-npm run dev
-```
-
-- client :
-
-```sh
-cd client
-npm start
-```
+- l'option `size` est pour la dimension
+- l'option `level` est pour le niveau de correction d'erreur `L` pour low, `M` pour medium, `H` pour high
